@@ -33,7 +33,6 @@ defmodule Dockerex.Client do
     base_url <> resource
     |> Dockerex.LogStream.stream(headers, Keyword.merge(options, opt))
     |> Dockerex.LineStream.stream()
-    |> Stream.map(&Poison.decode!/1)
   end
 
   @doc """
