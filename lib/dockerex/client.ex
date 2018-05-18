@@ -29,9 +29,9 @@ defmodule Dockerex.Client do
   Send a GET request to the Docker API at the speicifed resource.
   """
   def get_stream(resource, headers \\ default_headers, opt \\ []) do
-    Logger.debug "Sending GET request to the Docker HTTP API: #{resource}"
+    Logger.debug "Streaming GET request to the Docker HTTP API: #{resource}"
     base_url <> resource
-    |> Dockerex.LogStream.stream(headers, Keyword.merge(options, opt))
+    |> Dockerex.LogStream.stream(:get, "", headers, Keyword.merge(options, opt))
     |> Dockerex.LineStream.stream()
   end
 
@@ -44,6 +44,16 @@ defmodule Dockerex.Client do
     base_url <> resource
     |> HTTPoison.post!(data, headers, Keyword.merge(options, opt))
     |> decode_body
+  end
+
+  @doc """
+  Send a GET request to the Docker API at the speicifed resource.
+  """
+  def post_stream(resource, data \\ "", headers \\ default_headers, opt \\ []) do
+    Logger.debug "Streaming POST request to the Docker HTTP API: #{resource}"
+    base_url <> resource
+    |> Dockerex.LogStream.stream(:post, data, headers, Keyword.merge(options, opt))
+    |> Dockerex.LineStream.stream()
   end
 
   @doc """
