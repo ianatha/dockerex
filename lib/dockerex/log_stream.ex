@@ -30,7 +30,7 @@ defmodule Dockerex.LogStream do
   end
 
   def stream(url, method, data, headers, options) do
-    options = [{:stream_to, self}, {:timeout, :infinity} | options]
+    options = [{:stream_to, self}, {:timeout, :infinity}, {:recv_timeout, :infinity} | options]
     Stream.resource(fn -> start(url, method, data, headers, options) end, &continue/1, &finish/1)
   end
 
