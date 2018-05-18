@@ -26,6 +26,17 @@ defmodule Dockerex.Client do
   end
 
   @doc """
+  Send a GET request to the Docker API at the speicifed resource.
+  """
+  def get_stream(resource, headers \\ default_headers, opt \\ []) do
+    Logger.debug "Sending GET request to the Docker HTTP API: #{resource}"
+    base_url <> resource
+    |> Dockerex.LogStream.stream(headers, Keyword.merge(options, opt))
+    |> Dockerex.LineStream.stream()
+    |> Stream.map(&Poison.decode!/1)
+  end
+
+  @doc """
   Send a POST request to the Docker API, JSONifying the passed in data.
   """
   def post(resource, data \\ "", headers \\ default_headers, opt \\ []) do
@@ -44,7 +55,7 @@ defmodule Dockerex.Client do
     base_url <> resource
     |> HTTPoison.delete!(headers, Keyword.merge(options, opt))
   end
-
+  
   defp decode_body(%HTTPoison.Response{body: ""}) do
     Logger.debug "Empty response"
     :nil
