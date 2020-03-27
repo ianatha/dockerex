@@ -30,7 +30,7 @@ defmodule Dockerex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poison, "~> 4.0"},
+      {:poison, "~> 3.0"},
       {:httpoison, "~> 1.6"},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
